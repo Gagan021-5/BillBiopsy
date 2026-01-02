@@ -194,20 +194,7 @@ graph TD
   B -->|"Voice Complaint"| G[WebRTC + LangChain]
 ```
 
----
 
-## Contributing
-
-Contributions, issues, and enhancements are welcome. Suggested improvements:
-
-- Improve AI prompts and analysis accuracy  
-- Add more bill templates and extractors  
-- Improve UI/UX for accessibility and clarity  
-- Add persistent user accounts (optional) and audit trails
-
-When contributing, please open an issue or submit a PR with a clear description and relevant tests.
-
----
 
 ## License
 
