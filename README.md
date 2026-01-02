@@ -25,8 +25,6 @@ An AI-powered medical bill analyzer focused on the Indian healthcare market.
 - Voice-based complaint input (transcription)  
 - All processing is in-memory — no authentication or database required
 
-Demo: [Live Demo (placeholder)](https://example-demo-url.com)  
-Repo: [https://github.com/Gagan021-5/BillBiopsy](https://github.com/Gagan021-5/BillBiopsy)
 
 ---
 
