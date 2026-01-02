@@ -67,7 +67,6 @@ Clone the repo:
 
 ```bash
 git clone https://github.com/Gagan021-5/BillBiopsy.git
-cd BillBiopsy
 ```
 
 Install dependencies for both frontend and backend:
