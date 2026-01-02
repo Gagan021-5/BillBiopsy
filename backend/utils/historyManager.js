@@ -22,10 +22,22 @@ export async function readHistory() {
   try {
     await ensureDataDir();
     const data = await fs.readFile(HISTORY_FILE, 'utf-8');
-    return JSON.parse(data);
+    // Handle empty or whitespace-only files
+    const trimmedData = data.trim();
+    if (!trimmedData) {
+      return { bills: [], rateCard: {} };
+    }
+    return JSON.parse(trimmedData);
   } catch (error) {
-    // If file doesn't exist, return empty structure
-    if (error.code === 'ENOENT') {
+    // If file doesn't exist or JSON is invalid, return empty structure
+    if (error.code === 'ENOENT' || error instanceof SyntaxError) {
+      // If JSON is invalid, try to fix it by writing a fresh file
+      if (error instanceof SyntaxError) {
+        console.warn('History file corrupted, resetting to empty structure');
+        const emptyHistory = { bills: [], rateCard: {} };
+        await writeHistory(emptyHistory);
+        return emptyHistory;
+      }
       return { bills: [], rateCard: {} };
     }
     throw error;

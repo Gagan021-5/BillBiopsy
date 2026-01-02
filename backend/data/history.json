@@ -1,0 +1,274 @@
+{
+  "bills": [
+    {
+      "id": "1767353536231",
+      "timestamp": "2026-01-02T11:32:16.231Z",
+      "hospital_name": "Jeevan Hospital",
+      "patient_name": "DUMMY PATIENT",
+      "bill_date": "19-Jan-2023",
+      "city": "Pune",
+      "total_amount": 3150,
+      "potential_savings": 300,
+      "line_items": [
+        {
+          "service": "Bed Charges - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 250,
+          "flagged": false,
+          "standard_price": 625,
+          "savings": 0,
+          "reason": "Charged ₹250, fair price ₹625 (assuming general ward rates as per Tier-2 city benchmarks, max ₹2500 for private room)"
+        },
+        {
+          "service": "Nursing Fees - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 250,
+          "flagged": true,
+          "standard_price": 200,
+          "savings": 50,
+          "reason": "Charged ₹250, fair price ₹200. Potentially inflated nursing charges."
+        },
+        {
+          "service": "Nebulization - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 100,
+          "flagged": false,
+          "standard_price": 150,
+          "savings": 0,
+          "reason": "Charged ₹100, fair price ₹150. Within reasonable limits for a Tier-2 city."
+        },
+        {
+          "service": "Injection Charges - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 50,
+          "flagged": false,
+          "standard_price": 75,
+          "savings": 0,
+          "reason": "Charged ₹50, fair price ₹75. Reasonable."
+        },
+        {
+          "service": "Blood Transfusion Charges - GENERAL(GEN001)",
+          "quantity": 1,
+          "price": 1000,
+          "flagged": true,
+          "standard_price": 750,
+          "savings": 250,
+          "reason": "Charged ₹1000, fair price ₹750. Blood transfusion service appears overpriced."
+        },
+        {
+          "service": "Major OT Charge - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 1000,
+          "flagged": false,
+          "standard_price": 1500,
+          "savings": 0,
+          "reason": "Charged ₹1000, fair price ₹1500. Within reasonable limits for Tier-2 city, considering complexity not specified."
+        },
+        {
+          "service": "Dr. Akshara Raje (Consultation)",
+          "quantity": 1,
+          "price": 500,
+          "flagged": false,
+          "standard_price": 800,
+          "savings": 0,
+          "reason": "Charged ₹500, fair price ₹800. Consultation fee is below the maximum fair price limit."
+        }
+      ]
+    },
+    {
+      "id": "1767353259648",
+      "timestamp": "2026-01-02T11:27:39.648Z",
+      "hospital_name": "Jeevan Hospital",
+      "patient_name": "DUMMY PATIENT",
+      "bill_date": "19-Jan-2023",
+      "city": "Pune",
+      "total_amount": 3150,
+      "potential_savings": 450,
+      "line_items": [
+        {
+          "service": "Bed Charges - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 250,
+          "flagged": true,
+          "standard_price": 2500,
+          "savings": -2250,
+          "reason": "Charged ₹250, fair price ₹2500. Private room limit is ₹2500. This is general ward charge. Assuming standard general ward price. If it was a private room, then it's grossly overpriced."
+        },
+        {
+          "service": "Nursing Fees - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 250,
+          "flagged": false,
+          "standard_price": 300,
+          "savings": 0,
+          "reason": "Charged ₹250, fair price ₹300. This is within reasonable limits for nursing fees."
+        },
+        {
+          "service": "Nebulization - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 100,
+          "flagged": false,
+          "standard_price": 200,
+          "savings": 0,
+          "reason": "Charged ₹100, fair price ₹200. This is a reasonable charge for nebulization."
+        },
+        {
+          "service": "Injection Charges - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 50,
+          "flagged": false,
+          "standard_price": 150,
+          "savings": 0,
+          "reason": "Charged ₹50, fair price ₹150. This is a reasonable charge for injection administration, assuming standard injection cost is included."
+        },
+        {
+          "service": "Blood Transfusion Charges - GENERAL(GEN001)",
+          "quantity": 1,
+          "price": 1000,
+          "flagged": true,
+          "standard_price": 800,
+          "savings": 200,
+          "reason": "Charged ₹1000, fair price ₹800. This charge is slightly above the estimated fair price."
+        },
+        {
+          "service": "Major OT Charge - GENERAL (GEN001)",
+          "quantity": 1,
+          "price": 1000,
+          "flagged": false,
+          "standard_price": 2000,
+          "savings": 0,
+          "reason": "Charged ₹1000, fair price ₹2000. This charge is within reasonable limits for a major OT charge."
+        },
+        {
+          "service": "Dr. Akshara Raje (General Physician)",
+          "quantity": 1,
+          "price": 500,
+          "flagged": false,
+          "standard_price": 800,
+          "savings": 0,
+          "reason": "Charged ₹500, fair price ₹800. This is below the doctor consultation limit."
+        }
+      ]
+    }
+  ],
+  "rateCard": {
+    "bed charges - general (gen001)": {
+      "prices": [
+        {
+          "price": 250,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.652Z"
+        },
+        {
+          "price": 250,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 250
+    },
+    "nursing fees - general (gen001)": {
+      "prices": [
+        {
+          "price": 250,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.652Z"
+        },
+        {
+          "price": 250,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 250
+    },
+    "nebulization - general (gen001)": {
+      "prices": [
+        {
+          "price": 100,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.652Z"
+        },
+        {
+          "price": 100,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 100
+    },
+    "injection charges - general (gen001)": {
+      "prices": [
+        {
+          "price": 50,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.653Z"
+        },
+        {
+          "price": 50,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 50
+    },
+    "blood transfusion charges - general(gen001)": {
+      "prices": [
+        {
+          "price": 1000,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.653Z"
+        },
+        {
+          "price": 1000,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 1000
+    },
+    "major ot charge - general (gen001)": {
+      "prices": [
+        {
+          "price": 1000,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.653Z"
+        },
+        {
+          "price": 1000,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 1000
+    },
+    "dr. akshara raje (general physician)": {
+      "prices": [
+        {
+          "price": 500,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:27:39.653Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:27:39.653Z",
+      "averagePrice": 500
+    },
+    "dr. akshara raje (consultation)": {
+      "prices": [
+        {
+          "price": 500,
+          "city": "Pune",
+          "timestamp": "2026-01-02T11:32:16.238Z"
+        }
+      ],
+      "lastUpdated": "2026-01-02T11:32:16.238Z",
+      "averagePrice": 500
+    }
+  }
+}

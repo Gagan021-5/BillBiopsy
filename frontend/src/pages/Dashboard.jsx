@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Download } from 'lucide-react';
 import FileUpload from '../components/upload/FileUpload';
+import VoiceRecorder from '../components/voice/VoiceRecorder';
+import ComplaintGenerator from '../components/complaint/ComplaintGenerator';
 import SavingsCard from '../components/analysis/SavingsCard';
 import ResultsTable from '../components/analysis/ResultsTable';
 import { getLanguageByCode } from '../constants/languages';
@@ -47,7 +50,12 @@ export default function Dashboard() {
       }
 
       const data = await response.json();
-      setAnalysis(data);
+      // Handle new format: { audit, complaintText } or legacy format
+      if (data.audit) {
+        setAnalysis({ ...data.audit, complaintText: data.complaintText });
+      } else {
+        setAnalysis(data);
+      }
     } catch (err) {
       setError(err.message || 'An error occurred while analyzing the bill');
       console.error('Analysis error:', err);
@@ -128,6 +136,9 @@ export default function Dashboard() {
             error={error}
           />
 
+          {/* Voice-to-Text Section */}
+          <VoiceRecorder />
+
           {/* Results Section */}
           {analysis && (
             <motion.div
@@ -138,6 +149,46 @@ export default function Dashboard() {
             >
               <SavingsCard analysis={analysis} />
               <ResultsTable analysis={analysis} onDownloadPDF={handleDownloadPDF} />
+              {analysis.complaintText && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-green-50 border border-green-200 rounded-lg"
+                >
+                  <h3 className="font-semibold text-green-900 mb-2">Generated Complaint:</h3>
+                  <div className="text-slate-800 whitespace-pre-wrap text-sm mb-4 max-h-60 overflow-y-auto">
+                    {analysis.complaintText}
+                  </div>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch('/api/generate-complaint-pdf', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ complaintText: analysis.complaintText }),
+                        });
+                        if (!response.ok) throw new Error('Failed to generate PDF');
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'complaint.pdf';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                      } catch (err) {
+                        setError(err.message || 'Failed to download PDF');
+                      }
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-lg font-semibold transition-colors"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download Complaint PDF
+                  </button>
+                </motion.div>
+              )}
+              <ComplaintGenerator auditResult={analysis} />
             </motion.div>
           )}
         </div>

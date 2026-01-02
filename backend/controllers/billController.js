@@ -1,4 +1,4 @@
-import { generateContent, SYSTEM_PROMPT, bufferToBase64 } from '../utils/geminiClient.js';
+import { generateContent, generateSystemPrompt, bufferToBase64 } from '../utils/geminiClient.js';
 import { generateComplaintPDF } from '../utils/pdfGenerator.js';
 import { addBillToHistory, updateRateCard, getRateCard } from '../utils/historyManager.js';
 
@@ -103,8 +103,23 @@ export async function analyzeBill(req, res) {
       };
     }
 
+    // Get rate card from history (for initial context)
+    const rateCard = await getRateCard();
+    
+    // Determine city tier for context (will be updated after analysis)
+    const initialCity = req.body.city || ''; // Try to get from request if available
+    const tier = getCityTier(initialCity);
+    
+    // Prepare initial context data (will be refined after first analysis)
+    const contextData = {
+      hospital_name: '',
+      city: initialCity
+    };
+    
+    // Generate forensic audit prompt with context
+    const prompt = generateSystemPrompt(contextData, tier);
+    
     // Call Gemini 2.5 Flash API (with fallback to 2.5 Flash Lite)
-    const prompt = SYSTEM_PROMPT;
     const text = await generateContent(prompt, imagePart);
 
     // Clean and parse JSON response
@@ -123,11 +138,41 @@ export async function analyzeBill(req, res) {
       jsonText = jsonMatch[0];
     }
 
-    const analysis = JSON.parse(jsonText);
+    const rawAnalysis = JSON.parse(jsonText);
     
-    // Validate required fields
-    if (!analysis.line_items || !Array.isArray(analysis.line_items)) {
-      throw new Error('Invalid response: line_items must be an array');
+    // Transform new format to old format for frontend compatibility
+    const analysis = {
+      hospital_name: rawAnalysis.hospital_name || '',
+      patient_name: rawAnalysis.patient_name || '',
+      bill_date: rawAnalysis.bill_date || '',
+      city: rawAnalysis.city || '',
+      audit_confidence: rawAnalysis.audit_confidence || 'MEDIUM',
+      line_items: [],
+      total_amount: 0,
+      potential_savings: rawAnalysis.total_savings || 0
+    };
+    
+    // Transform items array to line_items format
+    if (rawAnalysis.items && Array.isArray(rawAnalysis.items)) {
+      analysis.line_items = rawAnalysis.items.map(item => ({
+        service: item.name || '',
+        quantity: 1, // Default quantity
+        price: item.charged_price || 0,
+        flagged: item.is_overpriced || false,
+        standard_price: item.fair_price || 0,
+        savings: item.is_overpriced ? (item.charged_price - item.fair_price) : 0,
+        reason: item.reason || ''
+      }));
+      
+      // Calculate total amount
+      analysis.total_amount = analysis.line_items.reduce((sum, item) => sum + (item.price || 0), 0);
+    } else if (rawAnalysis.line_items && Array.isArray(rawAnalysis.line_items)) {
+      // Fallback: if old format is returned, use it directly
+      analysis.line_items = rawAnalysis.line_items;
+      analysis.total_amount = rawAnalysis.total_amount || analysis.line_items.reduce((sum, item) => sum + (item.price || 0), 0);
+      analysis.potential_savings = rawAnalysis.potential_savings || 0;
+    } else {
+      throw new Error('Invalid response: items or line_items must be an array');
     }
     
     // Ensure all required fields exist
@@ -135,41 +180,33 @@ export async function analyzeBill(req, res) {
     if (typeof analysis.patient_name === 'undefined') analysis.patient_name = '';
     if (typeof analysis.bill_date === 'undefined') analysis.bill_date = '';
     if (typeof analysis.city === 'undefined') analysis.city = '';
-    if (typeof analysis.total_amount === 'undefined') {
-      analysis.total_amount = analysis.line_items.reduce((sum, item) => sum + (item.price || 0), 0);
-    }
-
-    // Get rate card from history
-    const rateCard = await getRateCard();
     
-    // Enhance line items with standard prices and improved flagging
+    // Update tier based on actual city from analysis
     const cityName = analysis.city || '';
-    const tier = getCityTier(cityName);
+    const finalTier = getCityTier(cityName);
     
+    // Enhance line items with additional data if missing
     for (const item of analysis.line_items) {
-      // Get standard price from history or tier
-      const standardPrice = await getStandardPrice(item.service, cityName, rateCard);
-      item.standard_price = standardPrice;
-      
-      // Re-evaluate flagging based on standard price
-      const priceRatio = item.price / standardPrice;
-      if (priceRatio > 1.5) { // Flag if 50% more than standard
-        item.flagged = true;
-        item.savings = item.price - standardPrice;
-      } else {
-        item.flagged = false;
-        item.savings = 0;
+      if (!item.standard_price) {
+        const standardPrice = await getStandardPrice(item.service, cityName, rateCard);
+        item.standard_price = standardPrice;
       }
+      if (item.flagged && !item.savings) {
+        item.savings = Math.max(0, (item.price || 0) - (item.standard_price || 0));
+      }
+      if (!item.quantity) item.quantity = 1;
     }
     
-    // Recalculate potential savings
-    analysis.potential_savings = analysis.line_items
-      .filter(item => item.flagged)
-      .reduce((sum, item) => sum + (item.savings || 0), 0);
+    // Recalculate potential savings if needed
+    if (!analysis.potential_savings || analysis.potential_savings === 0) {
+      analysis.potential_savings = analysis.line_items
+        .filter(item => item.flagged)
+        .reduce((sum, item) => sum + (item.savings || 0), 0);
+    }
     
     // Add tier information
-    analysis.city_tier = tier.desc;
-    analysis.rate_tier = tier;
+    analysis.city_tier = finalTier.desc;
+    analysis.rate_tier = finalTier;
 
     // Save to history
     try {
@@ -180,7 +217,20 @@ export async function analyzeBill(req, res) {
       // Don't fail the request if history save fails
     }
 
-    res.json(analysis);
+    // Generate complaint text using LangChain (optional, non-blocking)
+    let complaintText = null;
+    try {
+      const { generateFormalComplaint } = await import('./complaintController.js');
+      complaintText = await generateFormalComplaint('', analysis);
+    } catch (complaintError) {
+      console.error('Error generating complaint during analysis:', complaintError);
+      // Don't fail the request if complaint generation fails
+    }
+
+    res.json({
+      audit: analysis,
+      complaintText: complaintText
+    });
   } catch (error) {
     console.error('Error analyzing bill:', error);
     
