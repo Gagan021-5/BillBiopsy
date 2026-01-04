@@ -1,25 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Languages, ChevronDown } from 'lucide-react';
 import { getLanguagesByRegion, getLanguageByCode, RTL_LANGUAGES } from '../../constants/languages';
 
-export default function LanguagePicker() {
+export default function LanguagePicker({ onLanguageChange }) {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Safe fallback if language is undefined
-  const currentLang = getLanguageByCode(i18n.language) || { name: 'Language', dir: 'ltr' };
+  useEffect(() => {
+    const storedLang = localStorage.getItem('i18nextLng');
+    if (!storedLang || !getLanguageByCode(storedLang)) {
+      if (i18n.language !== 'en') {
+        i18n.changeLanguage('en');
+        localStorage.setItem('i18nextLng', 'en');
+      }
+    } else if (i18n.language !== storedLang && getLanguageByCode(storedLang)) {
+      i18n.changeLanguage(storedLang);
+    }
+  }, []);
 
-  // Safe fallback for regions
+  const currentLang = getLanguageByCode(i18n.language) || getLanguageByCode('en') || { name: 'English', dir: 'ltr' };
   const languagesByRegion = getLanguagesByRegion() || {};
 
   const handleLanguageChange = (langCode) => {
     const lang = getLanguageByCode(langCode) || { dir: 'ltr' };
     i18n.changeLanguage(langCode);
+    try {
+      localStorage.setItem('i18nextLng', langCode);
+    } catch (e) {
+      console.warn('localStorage write failed:', e);
+    }
     setIsOpen(false);
+    
+    if (onLanguageChange) {
+      onLanguageChange();
+    }
 
-    // Update document direction and language attribute
     document.documentElement.dir = lang.dir;
     document.documentElement.lang = langCode;
   };
@@ -49,7 +66,7 @@ export default function LanguagePicker() {
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 z-50"
+              className="absolute right-0 mt-2 w-72 sm:w-80 max-h-96 overflow-y-auto bg-white/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/20 z-50"
             >
               <div className="p-4">
                 {Object.entries(languagesByRegion).map(([region, langs]) => (

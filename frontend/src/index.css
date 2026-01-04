@@ -32,5 +32,63 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     @apply bg-[#1e40af];
   }
+
+  /* Subtle noise texture */
+  .bg-noise {
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+    background-size: 4px 4px;
+    pointer-events: none;
+  }
+
+  /* Enhanced glassmorphism shadow */
+  .glass-shadow {
+    box-shadow: 
+      0 8px 32px 0 rgba(31, 38, 135, 0.08),
+      0 4px 16px 0 rgba(31, 38, 135, 0.04),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+  }
+
+  /* Subtle animated background blobs */
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -30px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+
+  .bg-blob-1 {
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .bg-blob-2 {
+    animation: float 25s ease-in-out infinite reverse;
+  }
+
+  .bg-blob-3 {
+    animation: float 30s ease-in-out infinite;
+  }
+
+  .bg-blob-4 {
+    animation: float 22s ease-in-out infinite reverse;
+  }
 }
 

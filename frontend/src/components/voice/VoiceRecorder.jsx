@@ -122,46 +122,49 @@ export default function VoiceRecorder({ onTranscription }) {
 
   return (
     <Card className="text-center">
-      <h2 className="text-2xl font-bold text-slate-900 mb-2">
+      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-2">
         🎤 Voice-to-Text
       </h2>
-      <p className="text-slate-600 mb-6 text-sm">
+      <p className="text-slate-600 mb-4 sm:mb-6 text-xs sm:text-sm px-2">
         Record your voice or upload an audio file to transcribe
       </p>
 
       {/* Recording Controls */}
-      <div className="flex items-center justify-center gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:mb-6">
         {!isRecording ? (
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={startRecording}
-            className="flex items-center gap-2 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors"
+            className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors text-sm sm:text-base w-full sm:w-auto justify-center"
           >
-            <Mic className="w-5 h-5" />
-            Start Recording
+            <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Start Recording</span>
+            <span className="sm:hidden">Record</span>
           </motion.button>
         ) : (
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={stopRecording}
-            className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors animate-pulse"
+            className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors animate-pulse text-sm sm:text-base w-full sm:w-auto justify-center"
           >
-            <MicOff className="w-5 h-5" />
-            Stop Recording
+            <MicOff className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Stop Recording</span>
+            <span className="sm:hidden">Stop</span>
           </motion.button>
         )}
 
-        <span className="text-slate-400">or</span>
+        <span className="text-slate-400 text-sm sm:text-base hidden sm:inline">or</span>
 
         <motion.label
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 px-6 py-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-lg font-semibold transition-colors cursor-pointer"
+          className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-[#2563EB] hover:bg-[#1d4ed8] text-white rounded-lg font-semibold transition-colors cursor-pointer text-sm sm:text-base w-full sm:w-auto justify-center"
         >
-          <Upload className="w-5 h-5" />
-          Upload Audio
+          <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="hidden sm:inline">Upload Audio</span>
+          <span className="sm:hidden">Upload</span>
           <input
             ref={fileInputRef}
             type="file"

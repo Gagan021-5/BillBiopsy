@@ -10,7 +10,12 @@ export async function generateFormalComplaint(transcriptText, auditResult) {
       throw new Error('auditResult missing');
     }
 
-    const overpricedItems = (auditResult.line_items || []).filter(item => item.flagged);
+    const patientName = (auditResult.patient_name && typeof auditResult.patient_name === 'string' && auditResult.patient_name.trim())
+      ? auditResult.patient_name.trim()
+      : 'Patient Name Not Available';
+
+    const lineItems = Array.isArray(auditResult.line_items) ? auditResult.line_items : [];
+    const overpricedItems = lineItems.filter(item => item && item.flagged === true);
 
     const complaintText = await generateComplaintWithLangChain(
       auditResult.hospital_name || '',
@@ -19,6 +24,7 @@ export async function generateFormalComplaint(transcriptText, auditResult) {
       auditResult.total_amount || 0,
       auditResult.potential_savings || 0,
       overpricedItems,
+      patientName,
       transcriptText || ''
     );
 
@@ -34,11 +40,19 @@ export async function generateFormalComplaint(transcriptText, auditResult) {
  */
 export async function generateComplaintPdf(req, res) {
   try {
-    const { complaintText } = req.body;
+    const { complaintText, patient_name } = req.body;
 
     if (!complaintText || typeof complaintText !== 'string') {
       return res.status(400).json({ error: 'Valid complaintText is required' });
     }
+
+    const validatedPatientName = (patient_name && typeof patient_name === 'string' && patient_name.trim())
+      ? patient_name.trim()
+      : 'Patient Name Not Available';
+
+    let finalComplaintText = complaintText;
+    finalComplaintText = finalComplaintText.replace(/\{patient_name\}/g, validatedPatientName);
+    finalComplaintText = finalComplaintText.replace(/\[Patient'?s? Name\]/gi, validatedPatientName);
 
     const doc = new PDFDocument({
       size: 'A4',
@@ -85,7 +99,7 @@ export async function generateComplaintPdf(req, res) {
     doc
       .font('Helvetica')
       .fontSize(11)
-      .text(complaintText, {
+      .text(finalComplaintText, {
         align: 'left',
         lineGap: 4,
       });

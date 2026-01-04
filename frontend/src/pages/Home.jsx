@@ -43,14 +43,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-[#2563EB] via-[#1e40af] to-emerald-600 bg-clip-text text-transparent tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-[#2563EB] via-[#1e40af] to-emerald-600 bg-clip-text text-transparent tracking-tight px-2">
               {t('home.hero_title')}
             </h1>
-            <p className="text-xl md:text-2xl text-slate-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-600 mb-6 sm:mb-10 max-w-3xl mx-auto leading-relaxed px-2">
               {t('home.hero_subtitle')}
             </p>
             <Link to="/dashboard">
-              <Button variant="primary" className="text-lg px-8 py-4">
+              <Button variant="primary" className="text-sm sm:text-base md:text-lg px-6 sm:px-8 py-3 sm:py-4">
                 {t('home.get_started')}
               </Button>
             </Link>
@@ -75,7 +75,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={index}

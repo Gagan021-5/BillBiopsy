@@ -14,7 +14,7 @@ export default function Card({
       className={clsx(
         'rounded-2xl p-6 shadow-xl',
         glassmorphism 
-          ? 'backdrop-blur-md bg-white/70 border border-white/20' 
+          ? 'backdrop-blur-md bg-white/70 border border-white/20 glass-shadow' 
           : 'bg-white',
         className
       )}

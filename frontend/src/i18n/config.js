@@ -54,19 +54,42 @@ const resources = {
   ur: { translation: ur }
 };
 
+const supportedLanguages = Object.keys(resources);
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
     fallbackLng: 'en',
+    lng: 'en',
     defaultNS: 'translation',
     interpolation: {
       escapeValue: false
     },
     detection: {
       order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
+      checkWhitelist: true
+    },
+    supportedLngs: supportedLanguages
+  })
+  .then(() => {
+    const currentLang = i18n.language;
+    if (!currentLang || !supportedLanguages.includes(currentLang)) {
+      i18n.changeLanguage('en');
+      try {
+        localStorage.setItem('i18nextLng', 'en');
+      } catch (e) {
+        console.warn('localStorage write failed:', e);
+      }
+    } else {
+      try {
+        localStorage.setItem('i18nextLng', currentLang);
+      } catch (e) {
+        console.warn('localStorage write failed:', e);
+      }
     }
   });
 

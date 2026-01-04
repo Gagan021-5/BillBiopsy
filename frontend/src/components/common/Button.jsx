@@ -9,7 +9,7 @@ export default function Button({
   className = '',
   ...props 
 }) {
-  const baseStyles = 'px-6 py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base';
   
   const variants = {
     primary: 'bg-gradient-to-r from-[#2563EB] to-[#1e40af] text-white shadow-lg hover:shadow-xl',

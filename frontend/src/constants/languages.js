@@ -178,7 +178,18 @@ export const LANGUAGES = [
 ];
 
 export const getLanguageByCode = (code) => {
-  return LANGUAGES.find(lang => lang.code === code) || LANGUAGES.find(lang => lang.code === 'en');
+  const found = LANGUAGES.find(lang => lang.code === code);
+  if (found) return found;
+  
+  // Fallback to English if not found
+  return {
+    code: 'en',
+    name: 'English',
+    englishName: 'English',
+    dir: 'ltr',
+    voiceCode: 'en-IN',
+    region: 'International'
+  };
 };
 
 export const getLanguagesByRegion = () => {

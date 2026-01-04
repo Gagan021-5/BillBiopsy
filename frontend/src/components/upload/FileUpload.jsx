@@ -54,10 +54,10 @@ export default function FileUpload({ onFileSelect, onAnalyze, file, loading, err
 
   return (
     <Card className="text-center">
-      <h2 className="text-3xl font-bold text-slate-900 mb-3 tracking-tight">
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 mb-2 sm:mb-3 tracking-tight">
         {t('upload.title')}
       </h2>
-      <p className="text-slate-600 mb-8 text-lg">
+      <p className="text-slate-600 mb-6 sm:mb-8 text-sm sm:text-base md:text-lg px-2">
         {t('upload.description')}
       </p>
 
@@ -66,7 +66,7 @@ export default function FileUpload({ onFileSelect, onAnalyze, file, loading, err
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`
-          relative border-2 border-dashed rounded-xl p-12 transition-all duration-300
+          relative border-2 border-dashed rounded-xl p-6 sm:p-8 md:p-12 transition-all duration-300
           ${isDragging 
             ? 'border-[#2563EB] bg-[#2563EB]/5 scale-105' 
             : 'border-slate-300 hover:border-[#2563EB] hover:bg-slate-50/50'
@@ -96,12 +96,12 @@ export default function FileUpload({ onFileSelect, onAnalyze, file, loading, err
                 animate={isDragging ? { scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] } : {}}
                 transition={{ duration: 0.5, repeat: isDragging ? Infinity : 0 }}
               >
-                <Upload className="w-16 h-16 text-[#2563EB] mb-4" />
+                <Upload className="w-12 h-12 sm:w-16 sm:h-16 text-[#2563EB] mb-3 sm:mb-4" />
               </motion.div>
-              <p className="text-lg font-semibold text-slate-700 mb-2">
+              <p className="text-sm sm:text-base md:text-lg font-semibold text-slate-700 mb-2 px-2">
                 {t('upload.drag_drop')}
               </p>
-              <p className="text-slate-500">
+              <p className="text-xs sm:text-sm md:text-base text-slate-500 px-2">
                 {t('upload.or')} <span className="text-[#2563EB] font-semibold">{t('upload.browse')}</span>
               </p>
             </motion.label>
@@ -113,13 +113,13 @@ export default function FileUpload({ onFileSelect, onAnalyze, file, loading, err
               exit={{ opacity: 0, scale: 0.9 }}
               className="flex items-center justify-between w-full"
             >
-              <div className="flex items-center space-x-4 flex-1">
-                <div className="w-12 h-12 rounded-lg bg-[#2563EB]/10 flex items-center justify-center">
-                  <File className="w-6 h-6 text-[#2563EB]" />
+              <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[#2563EB]/10 flex items-center justify-center flex-shrink-0">
+                  <File className="w-5 h-5 sm:w-6 sm:h-6 text-[#2563EB]" />
                 </div>
-                <div className="text-left flex-1">
-                  <p className="font-semibold text-slate-900">{file.name}</p>
-                  <p className="text-sm text-slate-500">
+                <div className="text-left flex-1 min-w-0">
+                  <p className="font-semibold text-slate-900 text-sm sm:text-base truncate">{file.name}</p>
+                  <p className="text-xs sm:text-sm text-slate-500">
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </p>
                 </div>
