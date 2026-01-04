@@ -17,6 +17,14 @@
 
 ---
 
+<div align="center">
+  <img src="https://i.postimg.cc/KYz166cW/Screenshot-2026-01-04-114329.png" width="45%" alt="Food Analysis Screen"/>
+  &nbsp;
+  <img src="https://i.postimg.cc/mZMPWNRR/Screenshot-2026-01-04-114543.png" width="45%" alt="Personalized Traffic Light Safety"/>
+</div>
+
+---
+
 An AI-powered medical bill analyzer focused on the Indian healthcare market.
 
 - Analyze hospital bills line-by-line  
@@ -193,9 +201,3 @@ graph TD
   B -->|"Generate Complaint PDF"| E[pdf-lib / PDFKit]
   B -->|"Voice Complaint"| G[WebRTC + LangChain]
 ```
-
-
-
-## License
-
-MIT
