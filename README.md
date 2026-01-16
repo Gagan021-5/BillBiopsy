@@ -1,13 +1,6 @@
-# 💪 BillBiopsy — Your AI-Powered Patient Advocate
+# BillBiopsy
 
 <p align="center">
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=400&size=20&duration=5000&pause=1000&color=36BCF7FF&background=00000000&center=false&vCenter=false&lines=%F0%9F%92%8A+Welcome+to+BillBiopsy!;Your+AI-Powered+Patient+Advocate" alt="Welcome animation for BillBiopsy: Your AI-Powered Patient Advocate" />
-</p>
-
-<p align="center">
-  <a href="https://example-demo-url.com" target="_blank">
-    <img src="https://img.shields.io/badge/Live%20Demo-00C853?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Live Demo" />
-  </a>
   <img src="https://img.shields.io/badge/Powered%20by-Google%20Gemini-6772E5?style=for-the-badge&logo=google&logoColor=white" alt="Google Gemini" />
   <img src="https://img.shields.io/badge/File%20Upload-Multer-008CDD?style=for-the-badge&logo=upload&logoColor=white" alt="Multer" />
   <img src="https://img.shields.io/badge/PDF%20Gen-pdf--lib-FFCA28?style=for-the-badge&logo=adobe&logoColor=black" alt="pdf-lib" />
@@ -17,116 +10,67 @@
 
 ---
 
+<p align="center">
+  <strong>Medical Bill Analysis Tool using OCR and LLMs.</strong><br>
+  <em>A Hackathon project demonstrating the use of Computer Vision for auditing healthcare invoices.</em>
+</p>
+
+---
+
 <div align="center">
-  <img src="https://i.postimg.cc/KYz166cW/Screenshot-2026-01-04-114329.png" width="45%" alt="Food Analysis Screen"/>
+  <img src="https://i.postimg.cc/KYz166cW/Screenshot-2026-01-04-114329.png" width="45%" alt="Analysis Interface"/>
   &nbsp;
-  <img src="https://i.postimg.cc/mZMPWNRR/Screenshot-2026-01-04-114543.png" width="45%" alt="Personalized Traffic Light Safety"/>
+  <img src="https://i.postimg.cc/mZMPWNRR/Screenshot-2026-01-04-114543.png" width="45%" alt="Result Output"/>
 </div>
 
 ---
 
-An AI-powered medical bill analyzer focused on the Indian healthcare market.
+## 📂 Project Overview
 
-- Analyze hospital bills line-by-line  
-- Detect likely overcharges and mismatches  
-- Generate complaint letters / PDFs when issues are found  
-- Voice-based complaint input (transcription)  
-- All processing is in-memory — no authentication or database required
+BillBiopsy is a technical prototype designed to parse medical invoices using Optical Character Recognition (OCR) and Large Language Models (LLMs). The system focuses on automating the verification of line items against a reference database.
 
-
----
-
-## Why BillBiopsy?
-
-- 🕒 Save time — automated, line-by-line analysis in seconds.  
-- 💸 Save money — detect overcharges and estimate potential refunds.  
-- 📝 Take action — generate formal complaint PDFs only when flagged items exist.  
-- 🎙️ Voice support — dictate your complaint instead of typing.  
-- 🇮🇳 India-focused — pricing comparisons and heuristics optimized for Indian healthcare.
+**Core Functionality:**
+- **OCR Integration:** Utilizes Google Gemini Vision to extract text and semantic data from images/PDFs.
+- **Logic Engine:** Algorithms to detect discrepancies in pricing logic.
+- **Automated Document Generation:** Programmatic PDF creation using `pdf-lib`.
+- **Speech-to-Text:** Implements WebRTC for capturing voice input, processed via LangChain.
+- **Privacy Design:** In-memory processing architecture; no persistent database storage for sensitive data.
 
 ---
 
-## Features
+## 🛠️ Tech Stack
 
-- Upload medical bills (JPG, PNG, PDF)  
-- AI-powered OCR & semantic analysis with Google Gemini Vision  
-- Automatic overpricing detection against reference market rates  
-- Itemized breakdown and summary of potential savings  
-- Conditional complaint PDF generation (only when flagged items exist)  
-- Voice complaint transcription and integration into the complaint  
-- No auth required — processing in-memory for privacy  
-- Supports bills up to 10MB by default (adjustable)
-
----
-
-## Tech Stack
-
-| Frontend | Backend | AI / Integrations |
+| Component | Technology Used | Purpose |
 |---|---|---|
-| React (Vite) | Node.js + Express | Google Gemini Vision |
-| CSS / Tailwind | Multer (file uploads) | LangChain + Groq LLM |
-| WebRTC Audio | pdf-lib / PDFKit | Optical Character Recognition (via Gemini Vision) |
+| **Frontend** | React + Vite | User Interface & State Management |
+| **Backend** | Node.js + Express | API Routing & Middleware |
+| **AI / ML** | Google Gemini Vision | Image-to-Text & Data Extraction |
+| **Logic** | LangChain + Groq | Natural Language Processing for context |
+| **IO** | Multer | Multipart form-data handling |
 
 ---
 
-## Quickstart
+## ⚡ Quickstart
 
-Clone the repo:
-
-```bash
-git clone https://github.com/Gagan021-5/BillBiopsy.git
-```
-
-Install dependencies for both frontend and backend:
+To run this project locally for development:
 
 ```bash
+# 1. Clone the repository
+git clone [https://github.com/Gagan021-5/BillBiopsy.git](https://github.com/Gagan021-5/BillBiopsy.git)
+
+# 2. Install dependencies
 npm run install-all
-```
 
-Configure environment variables (server/.env):
+# 3. Environment Configuration
+# Create a .env file in the server directory with the following keys:
+# GEMINI_API_KEY=your_key
+# GROQ_API_KEY=your_key
+# PORT=5000
 
-```
-GEMINI_API_KEY=your_gemini_api_key_here
-GROQ_API_KEY=your_groq_api_key_here
-PORT=5000
-```
-
-Run in development (both frontend & backend):
-
-```bash
+# 4. Run Development Server
 npm run dev
+
 ```
-
-Or run separately:
-
-Backend:
-```bash
-cd backend
-npm run dev
-```
-
-Frontend:
-```bash
-cd frontend
-npm run dev
-```
-
-- Frontend: http://localhost:3000  
-- Backend API: http://localhost:5000
-
----
-
-## Environment Variables
-
-Create `server/.env` and add:
-
-- `GEMINI_API_KEY` — API key for Google Gemini Vision  
-- `GROQ_API_KEY` — API key for Groq LLM (LangChain backend)  
-- `PORT` — server port (default: 5000)
-
-Make sure keys are kept secret and not checked into source control.
-
----
 
 ## Run Locally (Notes)
 
@@ -163,12 +107,11 @@ billbiopsy/
 
 ## API Endpoints
 
-- POST `/api/analyze` — Upload and analyze a hospital bill (multipart/form-data with bill file). Response: itemized prices, flagged overcharges, summary.  
-- POST `/api/generate-complaint` — Generate AI complaint text from audit results and optional voice transcript (JSON `{ transcript, auditResult }`). Response: `{ complaintText }`.  
-- POST `/api/generate-complaint-pdf` — Generate complaint PDF (only if there are flagged items). Request: `{ complaintText }`. Response: PDF download.  
+- POST `/api/analyze` — Multipart upload for image/PDF analysis.
+- POST `/api/generate-complaint` — Logic endpoint to structure audit results.
+- POST `/api/generate-complaint-pdf` — Stream endpoint for PDF generation.
 - POST `/api/voice-complaint` — Transcribe user audio complaint (multipart/form-data audio/webm). Response: `{ transcript }`.  
-- GET `/api/health` — Basic health check.
-
+- GET `/api/health` — Service status check.
 ---
 
 ## Usage
@@ -181,14 +124,6 @@ billbiopsy/
 
 ---
 
-## Notes & Limits
-
-- All processing happens in-memory; no database persists sensitive data.  
-- Bills supported up to 10MB (default). Increase limit in server if required.  
-- Accuracy depends on bill quality and format. Manual verification of results is recommended.  
-- This project is focused on Indian pricing heuristics — adapt reference data for other regions.
-
----
 
 ## Architecture
 
@@ -201,3 +136,6 @@ graph TD
   B -->|"Generate Complaint PDF"| E[pdf-lib / PDFKit]
   B -->|"Voice Complaint"| G[WebRTC + LangChain]
 ```
+
+## 🚨 Disclaimer
+This software is a proof-of-concept created for a hackathon/educational demonstration. It is not intended for commercial use or medical advice.
